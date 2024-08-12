@@ -1,7 +1,9 @@
 package com.microservicio.reto1.controllers;
 
+import com.microservicio.reto1.dtos.LoginDTO;
 import com.microservicio.reto1.dtos.MensajeDTO;
 import com.microservicio.reto1.dtos.SaludoDTO;
+import com.microservicio.reto1.dtos.TokenDTO;
 import com.microservicio.reto1.services.UsuarioServicioImpl;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
@@ -15,10 +17,10 @@ public class PublicoController {
 
     private final UsuarioServicioImpl usuarioServicio;
 
-    @GetMapping("/saludo")
-    public ResponseEntity<?> saludo(@Valid @RequestBody SaludoDTO saludoDTO) throws RuntimeException {
+    @PostMapping("/login")
+    public ResponseEntity<MensajeDTO<TokenDTO>> login(@Valid @RequestBody LoginDTO loginDTO) throws RuntimeException {
 
-        String saludo = usuarioServicio.saludoUsuario(saludoDTO);
-        return ResponseEntity.ok().body(new MensajeDTO<>(false, saludo));
+        TokenDTO tokenDTO = usuarioServicio.login(loginDTO);
+        return ResponseEntity.ok().body(new MensajeDTO<>(false, tokenDTO));
     }
 }
